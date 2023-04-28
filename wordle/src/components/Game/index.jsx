@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import Cell from "./Cell";
-import wordDictionary from "./dictonary.json";
+import wordDictionary from "./dictionary.json";
 
 const chances = 5;
 const wordLength = 5;
@@ -19,8 +19,8 @@ const range = (num) => new Array(num).fill(1).map((_, i) => i);
 function Game() {
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [answer, setAnswer] = useState(
-    range(chances).map((_) =>
-      range(wordLength).map((_) => ({
+    range(chances).map(() =>
+      range(wordLength).map(() => ({
         val: "",
         status: 0,
       }))
@@ -58,7 +58,7 @@ function Game() {
         return;
       }
       if (isEnter && x === wordLength) {
-        const guess = answer[y].join("");
+        const guess = answer[y].map((obj) => obj.val).join("");
         const isExits = wordDictionary.includes(guess);
         const win = guess === correct.join("");
         setAnswer((prevAnswer) => {
