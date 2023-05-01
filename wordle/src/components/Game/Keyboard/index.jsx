@@ -8,10 +8,10 @@ const layout = [
 
 function Keyboard({ onKeyPressed }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-1">
       {layout.map((row, rowNo) => {
         return (
-          <div key={rowNo} className="flex items-center justify-center gap-2">
+          <div key={rowNo} className="flex items-center justify-center gap-1">
             {row.map((char) => {
               return (
                 <Key

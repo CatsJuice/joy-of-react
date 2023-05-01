@@ -84,7 +84,7 @@ function Game() {
   }, [cursor, answer]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-6">
       <div>
         cursor: {cursor.x}, {cursor.y}
       </div>
