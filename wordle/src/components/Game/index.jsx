@@ -27,8 +27,9 @@ function Game() {
       }))
     )
   );
+  const [activeKeys, setActiveKeys] = useState([]);
   // console.log("render Game, cursor: ", cursor.x, cursor.y);
-  const handler = (e) => {
+  const keydownHandler = (e) => {
     console.log("key pressed", e.key);
     e.preventDefault && e.preventDefault();
     const isEnter = e.key === "Enter";
@@ -44,6 +45,7 @@ function Game() {
         return nextAnswer;
       });
       setCursor({ x: x + 1, y });
+      setActiveKeys((prevKeys) => [...prevKeys, e.key.toUpperCase()]);
       return;
     }
     if (isBackspace) {
@@ -77,16 +79,31 @@ function Game() {
       setCursor({ x: 0, y: y + 1 });
     }
   };
+  const keyupHandler = (e) => {
+    console.log("key pressed", e.key);
+    e.preventDefault && e.preventDefault();
+    const isAllowedChars = allowedChars.includes(e.key.toLowerCase());
+    const key = e.key.toUpperCase();
+    if (isAllowedChars) {
+      setActiveKeys((prevKeys) => prevKeys.filter((k) => k !== key));
+    }
+  };
 
   useEffect(() => {
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    window.addEventListener("keydown", keydownHandler);
+    window.addEventListener("keyup", keyupHandler);
+    return () => {
+      window.removeEventListener("keydown", keydownHandler);
+      window.removeEventListener("keyup", keyupHandler);
+    };
   }, [cursor, answer]);
 
   return (
     <div className="flex flex-col items-center gap-6">
       <div>
         cursor: {cursor.x}, {cursor.y}
+        <br />
+        activeKeys: {activeKeys.join(",")}
       </div>
       <div className="grid grid-cols-5 gap-2">
         {range(chances).map((row) =>
@@ -99,7 +116,10 @@ function Game() {
           ))
         )}
       </div>
-      <Keyboard onKeyPressed={(key) => handler({ key })} />
+      <Keyboard
+        onKeyPressed={(key) => keydownHandler({ key })}
+        activeKeys={activeKeys}
+      />
     </div>
   );
 }

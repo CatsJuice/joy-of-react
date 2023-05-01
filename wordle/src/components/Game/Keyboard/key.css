@@ -1,0 +1,5 @@
+.key:active .content,
+.active .content {
+  transform: translateY(0);
+  background-color: var(--tw-slate-300);
+}
