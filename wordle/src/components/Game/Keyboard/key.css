@@ -3,3 +3,8 @@
   transform: translateY(0);
   background-color: var(--tw-slate-300);
 }
+
+.invalid .content {
+  background-color: var(--tw-slate-50);
+  cursor: not-allowed;
+}

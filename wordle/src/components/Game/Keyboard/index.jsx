@@ -7,7 +7,7 @@ const layout = [
 ];
 
 // eslint-disable-next-line react/prop-types
-function Keyboard({ onKeyPressed, activeKeys = [] }) {
+function Keyboard({ onKeyPressed, activeKeys = [], invalidKeys = [] }) {
   return (
     <div className="flex flex-col items-center gap-1">
       {layout.map((row, rowNo) => {
@@ -17,6 +17,7 @@ function Keyboard({ onKeyPressed, activeKeys = [] }) {
               return (
                 <Key
                   active={activeKeys.includes(char.toUpperCase())}
+                  invalid={invalidKeys.includes(char.toUpperCase())}
                   key={char}
                   char={char}
                   onPressed={() =>

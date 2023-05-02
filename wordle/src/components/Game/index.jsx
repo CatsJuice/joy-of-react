@@ -5,7 +5,7 @@ import Cell from "./Cell";
 import wordDictionary from "./dictionary.json";
 import Keyboard from "./Keyboard";
 
-const chances = 5;
+const chances = 10;
 const wordLength = 5;
 const correct =
   wordDictionary[Math.floor(Math.random() * wordDictionary.length)].split("");
@@ -28,6 +28,7 @@ function Game() {
     )
   );
   const [activeKeys, setActiveKeys] = useState([]);
+  const [invalidKeys, setInvalidKeys] = useState([]);
   // console.log("render Game, cursor: ", cursor.x, cursor.y);
   const keydownHandler = (e) => {
     console.log("key pressed", e.key);
@@ -98,12 +99,26 @@ function Game() {
     };
   }, [cursor, answer]);
 
+  useEffect(() => {
+    setInvalidKeys(() =>
+      Array.from(
+        new Set(
+          answer.flatMap((row) => {
+            return row.filter(({ status }) => status === 3).map((el) => el.val);
+          })
+        )
+      )
+    );
+  }, [answer]);
+
   return (
     <div className="flex flex-col items-center gap-6">
       <div>
         cursor: {cursor.x}, {cursor.y}
         <br />
         activeKeys: {activeKeys.join(",")}
+        <br />
+        invalidKeys: {invalidKeys.join(",")}
       </div>
       <div className="grid grid-cols-5 gap-2">
         {range(chances).map((row) =>
@@ -119,6 +134,7 @@ function Game() {
       <Keyboard
         onKeyPressed={(key) => keydownHandler({ key })}
         activeKeys={activeKeys}
+        invalidKeys={invalidKeys}
       />
     </div>
   );
